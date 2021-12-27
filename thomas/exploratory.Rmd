@@ -1,0 +1,138 @@
+---
+title: "Streaming platform"
+author: "Thomas"
+date: "12/25/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loading packages, echo=FALSE, warning=FALSE, include=FALSE}
+library(shiny)
+library(tidyverse)
+library(ggmap)
+library(janitor)
+library(sf)
+library(mapview)
+library(leaflet)
+library(rgdal)
+library(RColorBrewer)
+library(lubridate)
+library(plotly)
+library(reshape2)
+library(shinyWidgets)
+library(ggrepel)
+library(dplyr)
+library(tidyr)
+library(gridExtra)
+```
+
+```{r loading data}
+load("my_data.RData")
+my_data <- my_data %>%
+  select(-X, -ID) %>%
+  mutate(IMDb = as.numeric(substring(IMDb, 1, 3)),
+         Rotten.Tomatoes = as.numeric(substring(Rotten.Tomatoes, 1, 2)))
+```
+
+```{r exploratory counts, eval=FALSE}
+my_data2 <- my_data %>%
+  summarise(Netflix = sum(Netflix), Hulu = sum(Hulu),
+            Prime.Video = sum(Prime.Video), Disney. = sum(Disney.))
+
+melted <- melt(my_data2)
+
+p <- ggplot(melted, aes(x = variable, y = value)) +
+  geom_col()
+
+```
+
+```{r mean quotation by platform}
+Netflix <- my_data %>%
+  filter(Netflix == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
+rownames(Netflix) <- "Netflix"
+Hulu <- my_data %>%
+  filter(Hulu == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
+rownames(Hulu) <- "Hulu"
+Prime.Video <- my_data %>%
+  filter(Prime.Video == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
+rownames(Prime.Video) <- "Prime.Video"
+Disney. <- my_data %>%
+  filter(Disney. == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
+rownames(Disney.) <- "Disney."
+my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
+my_data2 <- cbind(my_data2,
+                  Platform = c("Netflix", "Hulu", "Prime.Video",
+                               "Disney."))
+my_data2$Rotten.Tomatoes <- my_data2$Rotten.Tomatoes / 10
+melted <- melt(my_data2)
+
+p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
+  geom_col(position = "dodge")
+```
+
+```{r}
+Netflix <- my_data %>%
+  filter(Netflix == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  select(IMDb, Rotten.Tomatoes)
+Platform <- integer(length(Netflix$IMDb))
+for (i in 1:length(Netflix$IMDb)){
+  Platform[i] <- "Netflix"
+}
+Netflix <- cbind(Netflix, Platform)
+
+Hulu <- my_data %>%
+  filter(Hulu == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  select(IMDb, Rotten.Tomatoes)
+Platform <- integer(length(Hulu$IMDb))
+for (i in 1:length(Hulu$IMDb)){
+  Platform[i] <- "Hulu"
+}
+Hulu <- cbind(Hulu, Platform)
+
+Prime.Video <- my_data %>%
+  filter(Prime.Video == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  select(IMDb, Rotten.Tomatoes)
+Platform <- integer(length(Prime.Video$IMDb))
+for (i in 1:length(Prime.Video$IMDb)){
+  Platform[i] <- "Prime.Video"
+}
+Prime.Video <- cbind(Prime.Video, Platform)
+
+Disney. <- my_data %>%
+  filter(Disney. == 1) %>%
+  drop_na(IMDb, Rotten.Tomatoes) %>%
+  select(IMDb, Rotten.Tomatoes)
+Platform <- integer(length(Disney.$IMDb))
+for (i in 1:length(Disney.$IMDb)){
+  Platform[i] <- "Disney."
+}
+Disney. <- cbind(Disney., Platform)
+
+my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
+my_data2 <- cbind(my_data2,
+                  Platform = c("Netflix", "Hulu", "Prime.Video",
+                               "Disney."))
+my_data2$Rotten.Tomatoes <- my_data2$Rotten.Tomatoes / 10
+melted <- melt(my_data2)
+
+p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
+  geom_col(position = "dodge")
+
+```
+
+
+
