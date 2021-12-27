@@ -1,0 +1,247 @@
+# Load libraries
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+
+
+# Load Dataset
+data <- read.csv("~/Desktop/project 4/MoviesOnStreamingPlatforms_updated.csv")
+
+# Info about data
+summary(data)
+str(data)
+
+# Research question: What makes a movie popular depending on the platform?
+
+# Create a table with count values by streaming platform
+total_by_platform <- data %>%
+  summarise(Netflix = sum(Netflix),
+            Prime = sum(Prime.Video),
+            Hulu = sum(Hulu),
+            Disney = sum(Disney.)
+            )
+# Transpose the dataframe
+total_by_platform <- as.data.frame(t(total_by_platform))
+total_by_platform$names <- rownames(total_by_platform)
+
+
+# Get the positions
+total_by_platform2 <- total_by_platform %>% 
+  mutate(csum = rev(cumsum(rev(V1))), 
+         pos = V1/2 + lead(csum, 1),
+         pos = if_else(is.na(pos), V1/2, pos))
+
+# Pie chart of the proportions of the moviesin the dataset
+ggplot(total_by_platform, aes(x = "" , y = V1, fill = fct_inorder(names))) +
+  geom_col(width = 1, color = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Pastel1") +
+  geom_label_repel(data = total_by_platform2,
+                   aes(y = pos, label = paste0(V1)),
+                   size = 4.5, nudge_x = 1, show.legend = FALSE) +
+  guides(fill = guide_legend(title = "Streaming platform")) +
+  theme_void()
+
+
+# Rating according to the streaming platforms 
+
+# First, levels should be numeric values
+data$Rotten.Tomatoes <- as.character(data$Rotten.Tomatoes)
+data$IMDb <- as.character(data$IMDb)
+
+data$RT_num <- readr::parse_number(data$Rotten.Tomatoes)
+data$IMDb_num <- readr::parse_number(data$IMDb)
+
+
+# Distribution of the rating for RT  
+ggplot(data = subset(data, !is.na(RT_num)), aes(x=RT_num))+
+  geom_histogram(color="darkblue", fill="lightblue", bins = 50)
+
+# Distribution of the rating for RT  
+ggplot(data = subset(data, !is.na(IMDb_num)), aes(x=IMDb_num))+
+  geom_histogram(color="darkblue", fill="lightblue", bins = 20)
+
+# Compare the distrubutions by the platforms
+RT_Netflix <- data %>%
+  filter(Netflix == 1) %>%
+  select(RT_num)
+RT_Netflix$Platform <- "Netflix"
+
+RT_Prime <- data %>%
+  filter(Prime.Video == 1) %>%
+  select(RT_num)
+RT_Prime$Platform <- "Prime"
+
+RT_Hulu <- data %>%
+  filter(Hulu == 1) %>%
+  select(RT_num)
+RT_Hulu$Platform <- "Hulu"
+
+RT_Disney <- data %>%
+  filter(Disney. == 1) %>%
+  select(RT_num)
+RT_Disney$Platform <- "Disney"
+
+# Dataset
+RT_by_platform <- rbind(rbind(RT_Netflix, RT_Prime), rbind(RT_Hulu, RT_Disney))
+
+RT_by_platform <- RT_by_platform %>% 
+  drop_na(RT_num) # Drop na's
+
+
+# Boxplot by categories
+ggplot(RT_by_platform, aes(x= Platform, y=RT_num)) + 
+  geom_boxplot()
+
+
+# We can do the same but with the IMDb rating, we can compare 2 ratings by platform in one plot
+# Since the scale is different, we should rescale IMDb
+
+
+IMDb_Netflix <- data %>%
+  filter(Netflix == 1) %>%
+  select(IMDb_num) %>%
+  mutate(IMDb_rescaled = IMDb_num * 10) 
+IMDb_Netflix <- select(IMDb_Netflix,-c(IMDb_num))
+IMDb_Netflix$Platform <- "Netflix"
+
+IMDb_Prime <- data %>%
+  filter(Prime.Video == 1) %>%
+  select(IMDb_num) %>%
+  mutate(IMDb_rescaled = IMDb_num * 10) 
+IMDb_Prime <- select(IMDb_Prime,-c(IMDb_num))
+IMDb_Prime$Platform <- "Prime"
+
+
+IMDb_Hulu <- data %>%
+  filter(Hulu == 1) %>%
+  select(IMDb_num) %>%
+  mutate(IMDb_rescaled = IMDb_num * 10) 
+IMDb_Hulu <- select(IMDb_Hulu,-c(IMDb_num))
+IMDb_Hulu$Platform <- "Hulu"
+
+
+IMDb_Disney <- data %>%
+  filter(Disney. == 1) %>%
+  select(IMDb_num) %>%
+  mutate(IMDb_rescaled = IMDb_num * 10) 
+IMDb_Disney <- select(IMDb_Disney,-c(IMDb_num))
+IMDb_Disney$Platform <- "Disney"
+
+# Dataset
+IMDb_by_platform <- rbind(rbind(IMDb_Netflix, IMDb_Prime), rbind(IMDb_Hulu, IMDb_Disney))
+
+IMDb_by_platform <- IMDb_by_platform %>% 
+  drop_na(IMDb_rescaled) # Drop na's
+
+
+# Lets' combine RT and IMDb
+
+RT_by_platform <-  RT_by_platform %>%
+  rename(Rating = RT_num)
+RT_by_platform$Review <- "Rotten Tomatoes"
+
+
+IMDb_by_platform <-  IMDb_by_platform %>%
+  rename(Rating = IMDb_rescaled)
+IMDb_by_platform$Review <- "IMDb"
+
+# Combine the 2
+by_platform_review <- rbind(RT_by_platform, IMDb_by_platform)
+
+
+## GROUPED Boxplots
+ggplot(by_platform_review, aes(x= Platform, y=Rating, fill = Review)) + 
+  geom_boxplot()
+
+
+## Time series by platform 
+by_year <- data %>%
+  count(Year)
+
+# By platform
+by_year_Netflix <- subset(data, Netflix == 1) %>%
+  select(Year)
+by_year_Netflix <- by_year_Netflix %>%
+  count(Year)
+by_year_Netflix$Platform <- "Netflix"
+  
+by_year_Prime <- subset(data, Prime.Video == 1) %>%
+  select(Year)
+by_year_Prime <- by_year_Prime %>%
+  count(Year)
+by_year_Prime$Platform <- "Prime"  
+
+by_year_Hulu <- subset(data, Hulu == 1) %>%
+  select(Year)
+by_year_Hulu <- by_year_Hulu %>%
+  count(Year)
+by_year_Hulu$Platform <- "Hulu"  
+
+by_year_Disney <- subset(data, Disney. == 1) %>%
+  select(Year)
+by_year_Disney <- by_year_Disney %>%
+  count(Year)
+by_year_Disney$Platform <- "Disney"  
+
+
+by_year_platform <- rbind(rbind(by_year_Netflix, by_year_Prime), rbind(by_year_Hulu,by_year_Disney))
+
+
+
+## Plot of time series
+ggplot(by_year_platform, aes(x = Year, y = n)) + 
+  geom_line(aes(color = Platform), size = 1)
+
+
+# Correlation between the 2 rating platforms
+ggplot(data , aes(x = RT_num, y = IMDb_num), alpha = 0.5, size = 3) + geom_point() + geom_smooth(method = "lm") 
+
+# Analysis of by year and rating
+ggplot(data , aes(x = Year, y = IMDb_num)) + geom_point(alpha = 0.5) + geom_smooth(method = "lm") 
+
+ggplot(data, aes(x = Year, y = RT_num)) + geom_point() + geom_smooth(method = "lm") 
+
+
+
+
+# Would be interesting to discover by genres ?
+
+summary(subset(data, Netflix = 1)$Genres)
+
+
+library(stringr)
+
+data$genres_categ <- map(strsplit(as.character(data$Genres), split=','),1)
+
+data$genres_categ <- as.factor(as.character(data$genres_categ))
+
+
+by_year_rating <- data %>%
+  count(genres_categ)
+
+
+ggplot(by_year_rating, aes(x =n ,y = reorder(genres_categ, -n))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
+
+
+
+### Common Langauges
+summary(data$Country)
+
+
+data$main_country <- map(strsplit(as.character(data$Country), split=','),1)
+data$main_country <- as.factor(as.character(data$main_country))
+
+
+top_country <- data %>%
+  count(main_country)
+
+top_country <- top_country %>% 
+  arrange(desc(n))
+
+top_country <- head(top_country, 20)
+
+ggplot(top_country, aes(x =n ,y = reorder(main_country, -n))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
+
+
