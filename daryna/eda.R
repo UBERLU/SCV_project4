@@ -334,3 +334,13 @@ ggplot(subset(age_groups, Age!=""), aes(x=Age, y=freq)) +
   geom_bar(stat="identity", fill="blue")
 
 
+## Analysis of the top movies
+top_by_RT <- data %>%                                     
+  arrange(desc(RT_num))  
+
+top_by_RT <- top_by_RT[1:20,]
+
+
+ggplot(top_by_RT, aes(x =RT_num ,y = reorder(Title, -RT_num))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
+## What is the platform to choose based on the ratings ?
+## https://www.businessinsider.com/streaming-comparison-netflix-hulu-disney-plus-hbo-max-prime-2020-6#prime-video-also-has-the-most-tv-shows-but-netflix-isnt-far-behind-5
