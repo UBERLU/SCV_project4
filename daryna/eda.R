@@ -6,7 +6,7 @@ library(ggrepel)
 
 
 # Load Dataset
-data <- read.csv("~/Desktop/project 4/MoviesOnStreamingPlatforms_updated.csv")
+data <- read.csv("~/Documents/GitHub/SCV_project4/MoviesOnStreamingPlatforms_updated.csv")
 
 # Info about data
 summary(data)
@@ -206,7 +206,6 @@ ggplot(data, aes(x = Year, y = RT_num)) + geom_point() + geom_smooth(method = "l
 
 
 
-# Would be interesting to discover by genres ?
 
 summary(subset(data, Netflix = 1)$Genres)
 
@@ -225,8 +224,71 @@ by_year_rating <- data %>%
 ggplot(by_year_rating, aes(x =n ,y = reorder(genres_categ, -n))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
 
 
+# Would be interesting to discover the popularity by genres ?
+ggplot(data, aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.1, size = 3) 
+# too many categories, let's keep the top 10 most common
 
-### Common Langauges
+
+less_genres_data <- subset(data, genres_categ == "Comedy" | genres_categ == "Drama"|
+                             genres_categ == "Action"|genres_categ == "Documentary"|
+                             genres_categ=="Animation"| genres_categ=="Crime" | 
+                             genres_categ == "Adventure"| genres_categ == "Horror"|
+                             genres_categ  == "Biography")
+
+ggplot(less_genres_data, aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.3, size = 1) 
+
+ggplot(less_genres_data, aes(x = Year, y = IMDb_num, color = genres_categ)) + geom_point( alpha = 0.3, size = 1) 
+
+## By platform
+ggplot(subset(less_genres_data, Netflix == 1), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.3, size = 1) 
+ggplot(subset(less_genres_data, Hulu == 1), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.3, size = 1) 
+ggplot(subset(less_genres_data, Prime.Video == 1), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.3, size = 1) 
+ggplot(subset(less_genres_data, Disney. == 1), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.3, size = 1) 
+
+
+# Now let's see only the top rated movies
+require("ggrepel")
+
+top_rated <- subset(less_genres_data, RT_num > 90)
+rownames(top_rated) <- top_rated$Title
+##   
+ggplot(top_rated, aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = rownames(top_rated)),
+                  size = 2)
+
+
+
+# Best rated movies by countries
+ggplot(subset(data, RT_num > 90), aes(x = Year, y = RT_num)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = Country),
+                  size = 2)
+
+# Best movies and directors names
+ggplot(subset(data, RT_num > 90), aes(x = Year, y = RT_num)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = Directors),
+                  size = 2)
+
+# Best movies and titles
+ggplot(subset(data, RT_num > 90), aes(x = Year, y = RT_num)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = Title),
+                  size = 2)
+
+
+# Maybe interesting to see by the stremaning platform
+data$platform <- as.factor(ifelse(data$Netflix == 1, 'Netflix',
+                                 ifelse(data$Prime.Video == 1, 'Prime.Video', 
+                                        ifelse(data$Hulu == 1, 'Hulu', 
+                                               ifelse(data$Disney. ==1 , "Disney",0)))))
+
+
+ggplot(subset(data, RT_num > 90), aes(x = Year, y = RT_num, color = platform)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = Title),
+                  size = 2)
+
+ggplot(data, aes(x = Year, y = RT_num, color = platform)) + geom_point( alpha = 0.3, size = 1)
+
+
+### Common Countries
 summary(data$Country)
 
 
@@ -243,5 +305,32 @@ top_country <- top_country %>%
 top_country <- head(top_country, 20)
 
 ggplot(top_country, aes(x =n ,y = reorder(main_country, -n))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
+
+### Is there dependence between the length of a movie and its rating?
+ggplot(data, aes(x = Runtime, y = RT_num)) + geom_point( alpha = 0.5, size = 1) 
+
+### Did the runtime change over time ?
+
+ggplot(data,aes(Year, Runtime)) +
+  stat_summary(geom = "line", fun.y = mean) +
+  stat_summary(geom = "ribbon", fun.data = mean_cl_normal, alpha = 0.3)
+
+# Average ratings over time
+ggplot(data,aes(Year, RT_num)) +
+  stat_summary(geom = "line", fun.y = mean) +
+  stat_summary(geom = "ribbon", fun.data = mean_cl_normal, alpha = 0.3)
+
+ggplot(data,aes(Year, IMDb_num)) +
+  stat_summary(geom = "line", fun.y = mean) +
+  stat_summary(geom = "ribbon", fun.data = mean_cl_normal, alpha = 0.3)
+
+## Analysis of the age groups
+age_groups <- data %>% 
+  group_by(Age) %>%
+  summarise(freq = length(Age))
+
+
+ggplot(subset(age_groups, Age!=""), aes(x=Age, y=freq)) +
+  geom_bar(stat="identity", fill="blue")
 
 
