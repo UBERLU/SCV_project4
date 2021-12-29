@@ -316,9 +316,9 @@ ggplot(data,aes(Year, Runtime)) +
   stat_summary(geom = "ribbon", fun.data = mean_cl_normal, alpha = 0.3)
 
 # Average ratings over time
-ggplot(data,aes(Year, RT_num)) +
-  stat_summary(geom = "line", fun.y = mean) +
-  stat_summary(geom = "ribbon", fun.data = mean_cl_normal, alpha = 0.3)
+ggplot(data,aes(Year, RT_num, color = platform)) +
+  stat_summary(geom = "line", fun.y = mean) #+
+  #stat_summary(geom = "ribbon", fun.data = mean_cl_normal, alpha = 0.3)
 
 ggplot(data,aes(Year, IMDb_num)) +
   stat_summary(geom = "line", fun.y = mean) +
@@ -344,3 +344,52 @@ top_by_RT <- top_by_RT[1:20,]
 ggplot(top_by_RT, aes(x =RT_num ,y = reorder(Title, -RT_num))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
 ## What is the platform to choose based on the ratings ?
 ## https://www.businessinsider.com/streaming-comparison-netflix-hulu-disney-plus-hbo-max-prime-2020-6#prime-video-also-has-the-most-tv-shows-but-netflix-isnt-far-behind-5
+
+
+
+
+### Analysis of thebest rated by platform
+ggplot(subset(data, RT_num > 80), aes(x = Year, y = RT_num, color =platform)) + geom_point( alpha = 0.5, size = 1) 
+
+
+# Let's categorize the quality to determine the 
+
+data$IMDb_quality_categ <- as.factor(ifelse(data$IMDb_num >= 8, 'Excellent',
+                                  ifelse(data$IMDb_num >= 6 , 'Good', 
+                                         ifelse(data$IMDb_num >= 4 , 'Descent', 
+                                                ifelse(data$IMDb_num >=2 , "Bad", "Terrible")))))
+quality_composition <- data%>%
+  group_by(platform) %>%
+  count(IMDb_quality_categ)
+  
+quality_composition <- quality_composition %>% 
+  drop_na(IMDb_quality_categ)
+# Reorder factor levels 
+levels(quality_composition$IMDb_quality_categ) <- ordered(c("Excellent", "Good", "Descent", "Bad", "Terrible"))
+
+
+# Raw
+ggplot(quality_composition, aes(fill=IMDb_quality_categ, y=platform, x=n)) + 
+  geom_bar(stat="identity")
+
+#Percentage 
+ggplot(quality_composition, aes(fill=IMDb_quality_categ, y=platform, x=n)) + 
+  geom_bar(position="fill", stat="identity")
+
+high_quality_composition <-as.data.frame(table(subset(data,IMDb_num>6)$platform))
+
+
+
+# Most genres per platform of best rated movies
+
+
+# Compareto theprice
+
+
+
+netflix_high <-subset(data, platform  = "Netflix" & IMDb_num > 6)
+
+
+order(as.data.frame(table(netflix_high$genres_categ)))
+
+
