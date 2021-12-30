@@ -33,6 +33,35 @@ library(gridExtra)
 
 # Introduction and description of database
 
+The main dataset used is composed of the following variables :
+
+- `Title` : the film title;
+
+- `Year` : production year;
+
+- `Age` : age limit for viewing (`all`, `+7`, `+13`, `+16`, `+18`);
+
+- `IMDb` : IMDb rate (between 0 and 10);
+
+- `Rotten.Tomatoes` : Rotten Tomatoes rate (between 0 and 100);
+
+- `Netflix` : 1 if the film is on Netflix and 0 otherwise;
+
+- `Hulu` : 1 if the film is on Hulu and 0 otherwise;
+
+- `Prime.Video` : 1 if the film is on Prime.Video and 0 otherwise;
+
+- `Disney.` : 1 if the film is on Disney. and 0 otherwise;
+
+- `Directors` : production directors;
+
+- `Genres` : film categorie;
+
+- `Country` : production country;
+
+- `Language` : production language;
+
+- `Runtime` : total duration.
 
 
 ```{r loading data, echo=FALSE, warning=FALSE, message=FALSE}
@@ -475,3 +504,8 @@ p <- ggplot(Disney., aes(x = Age, y = value,
 p
 ```
 
+# Conclusion
+
+# Bibliography
+
+https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney
