@@ -49,13 +49,13 @@ The main dataset used is composed of the following variables :
 
 - `Hulu` : 1 if the film is on Hulu and 0 otherwise;
 
-- `Prime.Video` : 1 if the film is on Prime.Video and 0 otherwise;
+- `Prime.Video` : 1 if the film is on Prime Video and 0 otherwise;
 
-- `Disney.` : 1 if the film is on Disney. and 0 otherwise;
+- `Disney.` : 1 if the film is on Disney+ and 0 otherwise;
 
 - `Directors` : production directors;
 
-- `Genres` : film categorie;
+- `Genres` : film category;
 
 - `Country` : production country;
 
@@ -80,6 +80,7 @@ my_data2 <- my_data %>%
             Prime.Video = sum(Prime.Video), Disney. = sum(Disney.))
 
 melted <- melt(my_data2)
+melted$variable <- factor(melted$variable, levels = c("Netflix", "Hulu", "Prime.Video", "Disney."))
 
 p <- ggplot(melted, aes(x = variable, y = value, fill = variable)) +
   geom_col() +
@@ -129,6 +130,7 @@ Disney. <- cbind(Disney., Platform)
 my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
 
 melted <- melt(my_data2)
+melted$Platform <- factor(melted$Platform, levels = c("Netflix", "Hulu", "Prime Video", "Disney+"))
 
 p <- ggplot(melted, aes(x = Platform, y = value, fill = Platform)) +
   geom_boxplot() +
@@ -139,8 +141,8 @@ p <- ggplot(melted, aes(x = Platform, y = value, fill = Platform)) +
         legend.title = element_blank()) +
   labs(y = "Year", x = "Platform",
        title = "Distribution over time for each streaming platform") +
-  scale_fill_manual(values = c("#006E99", "#1CE783", "#E50914",
-                               "#00A8E1")) +
+  scale_fill_manual(values = c("#E50914", "#1CE783", "#00A8E1",
+                               "#006E99")) +
   scale_y_continuous(breaks = c(1914, seq(1921,2011,10), 2021),
                      limits = c(1914, 2021))
 p
@@ -168,13 +170,14 @@ Disney. <- my_data %>%
   filter(Disney. == 1) %>%
   drop_na(IMDb, Rotten.Tomatoes) %>%
   summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
-rownames(Disney.) <- "Disney +"
+rownames(Disney.) <- "Disney+"
 my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
 my_data2 <- cbind(my_data2,
                   Platform = c("Netflix", "Hulu", "Prime Video",
                                "Disney+"))
 my_data2$Rotten.Tomatoes <- my_data2$Rotten.Tomatoes / 10
 melted <- melt(my_data2)
+melted$Platform <- factor(melted$Platform, levels = c("Netflix", "Hulu", "Prime Video", "Disney+"))
 
 p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
   geom_col(position = "dodge") +
@@ -225,6 +228,7 @@ my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
 
 my_data2$Rotten.Tomatoes <- my_data2$Rotten.Tomatoes / 10
 melted <- melt(my_data2)
+melted$Platform <- factor(melted$Platform, levels = c("Netflix", "Hulu", "Prime Video", "Disney+"))
 
 p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
   geom_boxplot(position = "dodge") +
@@ -508,4 +512,6 @@ p
 
 # Bibliography
 
-https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney
+- <a href="https://www.kaggle.com">Kaggle</a> :
+
+  - <a href="https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney">Movies on Netflix, Prime Video, Hulu and Disney+</a>
