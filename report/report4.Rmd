@@ -29,6 +29,7 @@ library(ggrepel)
 library(dplyr)
 library(tidyr)
 library(gridExtra)
+library(grid)
 ```
 
 # Introduction and description of database
@@ -238,7 +239,7 @@ p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
         legend.position = "top",
         legend.title = element_blank()) +
   labs(y = "Quotation", x = "Platform",
-       title = "Mean quotation for each streaming platform") +
+       title = "Quotation distribution for each streaming platform") +
   scale_fill_manual(values = c("#DBA506","#F93208"))
 p
 ```
@@ -326,7 +327,7 @@ p <- ggplot(my_data2, aes(x=Rotten.Tomatoes,y=IMDb)) +
 p
 ```
 
-```{r IMDb vs Rotten tomatoes by platform, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
+```{r IMDb vs Rotten tomatoes by platform, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='65%'}
 my_data2 <- my_data %>%
   select(IMDb, Rotten.Tomatoes, Netflix, Prime.Video, Hulu, Disney.) %>%
   drop_na(IMDb)
@@ -361,57 +362,48 @@ Disney. <- cbind(Disney., Platform)
 
 my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
 
-p <- ggplot(Netflix, aes(x = Rotten.Tomatoes, y = IMDb)) +
+p1 <- ggplot(Netflix, aes(x = Rotten.Tomatoes, y = IMDb)) +
   geom_bin2d() +
-  geom_point(size = .2) +
+  #geom_point(size = .005) +
   geom_abline(intercept = 0, slope = 0.1) +
   theme_bw() +
   theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        legend.title = element_blank()) +
-  labs(title = "Rotten tomatoes and IMDb quotation for Netflix") +
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Netflix", x = "Rotten tomatoes", fill = "Count") +
   scale_fill_gradient(low="#FDCED0",high="#E50914")
-p
 
-p <- ggplot(Prime.Video, aes(x = Rotten.Tomatoes, y = IMDb)) +
+p2 <- ggplot(Prime.Video, aes(x = Rotten.Tomatoes, y = IMDb)) +
   geom_bin2d() +
-  geom_point(size = .2) +
+  #geom_point(size = .005) +
   geom_abline(intercept = 0, slope = 0.1) +
   theme_bw() +
   theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        legend.title = element_blank()) +
-  labs(title = "Rotten tomatoes and IMDb quotation for Prime Video") +
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Prime Video", x = "Rotten tomatoes", fill = "Count") +
   scale_fill_gradient(low="#CCF2FF",high="#00A8E1")
-p
 
-p <- ggplot(Hulu, aes(x = Rotten.Tomatoes, y = IMDb)) +
+p3 <- ggplot(Hulu, aes(x = Rotten.Tomatoes, y = IMDb)) +
   geom_bin2d() +
-  geom_point(size = .2) +
+  #geom_point(size = .005) +
   geom_abline(intercept = 0, slope = 0.1) +
   theme_bw() +
   theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        legend.title = element_blank()) +
-  labs(title = "Rotten tomatoes and IMDb quotation for Hulu") +
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Hulu", x = "Rotten tomatoes", fill = "Count") +
   scale_fill_gradient(low="#D1FAE6",high="#1CE783")
-p
 
-p <- ggplot(Disney., aes(x = Rotten.Tomatoes, y = IMDb)) +
+p4 <- ggplot(Disney., aes(x = Rotten.Tomatoes, y = IMDb)) +
   geom_bin2d() +
-  geom_point(size = .2) +
+  #geom_point(size = .005) +
   geom_abline(intercept = 0, slope = 0.1) +
   theme_bw() +
   theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        legend.title = element_blank()) +
-  labs(title = "Rotten tomatoes and IMDb quotation for Disney+") +
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Disney+", x = "Rotten tomatoes", fill = "Count") +
   scale_fill_gradient(low="#CCF1FF",high="#006E99")
-p
+
+grid.arrange(p1, p3, p2, p4, nrow = 2, top=textGrob("IMDb vs Rotten tomatoes by platform",
+                                                    gp=gpar(fontsize=20)))
 ```
 
 ```{r IMDb vs Rotten tomatoes by platform and age, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
