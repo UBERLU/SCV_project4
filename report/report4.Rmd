@@ -65,14 +65,18 @@ The main dataset used is composed of the following variables :
 - `Runtime` : total duration.
 
 
-```{r loading data, echo=FALSE, warning=FALSE, message=FALSE}
-load("my_data.RData")
-my_data <- my_data %>%
-  select(-X, -ID) %>%
-  mutate(IMDb = as.numeric(substring(IMDb, 1, 3)),
-         Rotten.Tomatoes = as.numeric(substring(Rotten.Tomatoes, 1, 2)))
-my_data$Age[my_data$Age == ""] = "all"
-my_data$Age <- factor(my_data$Age, levels = c("all", "7+", "13+", "16+", "18+"))
+# Thomas
+
+```{r plot 1 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot1.png')
+```
+
+```{r plot 2 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot2.png')
+```
+
+```{r plot 3 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot3.png')
 ```
 
 ```{r exploratory counts, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
@@ -95,418 +99,36 @@ p <- ggplot(melted, aes(x = variable, y = value, fill = variable)) +
 p
 ```
 
-```{r boxplot years, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-Netflix <- my_data %>%
-  filter(Netflix == 1) %>%
-  drop_na(Year) %>%
-  select(Year)
-Platform <- integer(length(Netflix$Year))
-Platform[1:length(Platform)] <- "Netflix"
-Netflix <- cbind(Netflix, Platform)
-
-Hulu <- my_data %>%
-  filter(Hulu == 1) %>%
-  drop_na(Year) %>%
-  select(Year)
-Platform <- integer(length(Hulu$Year))
-Platform[1:length(Platform)] <- "Hulu"
-Hulu <- cbind(Hulu, Platform)
-
-Prime.Video <- my_data %>%
-  filter(Prime.Video == 1) %>%
-  drop_na(Year) %>%
-  select(Year)
-Platform <- integer(length(Prime.Video$Year))
-Platform[1:length(Platform)] <- "Prime Video"
-Prime.Video <- cbind(Prime.Video, Platform)
-
-Disney. <- my_data %>%
-  filter(Disney. == 1) %>%
-  drop_na(Year) %>%
-  select(Year)
-Platform <- integer(length(Disney.$Year))
-Platform[1:length(Platform)] <- "Disney+"
-Disney. <- cbind(Disney., Platform)
-
-my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
-
-melted <- melt(my_data2)
-melted$Platform <- factor(melted$Platform, levels = c("Netflix", "Hulu", "Prime Video", "Disney+"))
-
-p <- ggplot(melted, aes(x = Platform, y = value, fill = Platform)) +
-  geom_boxplot() +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        legend.title = element_blank()) +
-  labs(y = "Year", x = "Platform",
-       title = "Distribution over time for each streaming platform") +
-  scale_fill_manual(values = c("#E50914", "#1CE783", "#00A8E1",
-                               "#006E99")) +
-  scale_y_continuous(breaks = c(1914, seq(1921,2011,10), 2021),
-                     limits = c(1914, 2021))
-p
+```{r plot 5 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot5.png')
 ```
 
-# Comparison between IMDb and Rotten tomatoes
-
-```{r mean quotation by platform, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-Netflix <- my_data %>%
-  filter(Netflix == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
-rownames(Netflix) <- "Netflix"
-Hulu <- my_data %>%
-  filter(Hulu == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
-rownames(Hulu) <- "Hulu"
-Prime.Video <- my_data %>%
-  filter(Prime.Video == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
-rownames(Prime.Video) <- "Prime Video"
-Disney. <- my_data %>%
-  filter(Disney. == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  summarise(IMDb = mean(IMDb), Rotten.Tomatoes = mean(Rotten.Tomatoes))
-rownames(Disney.) <- "Disney+"
-my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
-my_data2 <- cbind(my_data2,
-                  Platform = c("Netflix", "Hulu", "Prime Video",
-                               "Disney+"))
-my_data2$Rotten.Tomatoes <- my_data2$Rotten.Tomatoes / 10
-melted <- melt(my_data2)
-melted$Platform <- factor(melted$Platform, levels = c("Netflix", "Hulu", "Prime Video", "Disney+"))
-
-p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
-  geom_col(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",legend.title = element_blank()) +
-  labs(y = "Quotation", x = "Platform",
-       title = "Mean quotation for each streaming platform") +
-  scale_fill_manual(values = c("#DBA506","#F93208"))
-p
+```{r plot 6 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot6.png')
 ```
 
-```{r boxplot quotations, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-Netflix <- my_data %>%
-  filter(Netflix == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Netflix$IMDb))
-Platform[1:length(Platform)] <- "Netflix"
-Netflix <- cbind(Netflix, Platform)
-
-Hulu <- my_data %>%
-  filter(Hulu == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Hulu$IMDb))
-Platform[1:length(Platform)] <- "Hulu"
-Hulu <- cbind(Hulu, Platform)
-
-Prime.Video <- my_data %>%
-  filter(Prime.Video == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Prime.Video$IMDb))
-Platform[1:length(Platform)] <- "Prime Video"
-Prime.Video <- cbind(Prime.Video, Platform)
-
-Disney. <- my_data %>%
-  filter(Disney. == 1) %>%
-  drop_na(IMDb, Rotten.Tomatoes) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Disney.$IMDb))
-Platform[1:length(Platform)] <- "Disney+"
-Disney. <- cbind(Disney., Platform)
-
-my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
-
-my_data2$Rotten.Tomatoes <- my_data2$Rotten.Tomatoes / 10
-melted <- melt(my_data2)
-melted$Platform <- factor(melted$Platform, levels = c("Netflix", "Hulu", "Prime Video", "Disney+"))
-
-p <- ggplot(melted, aes(x = Platform, y = value, fill = variable)) +
-  geom_boxplot(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",
-        legend.title = element_blank()) +
-  labs(y = "Quotation", x = "Platform",
-       title = "Quotation distribution for each streaming platform") +
-  scale_fill_manual(values = c("#DBA506","#F93208"))
-p
+```{r plot 7 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot7.png')
 ```
 
-```{r counts by platform and age, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-Netflix <- my_data %>%
-  filter(Netflix == 1) %>%
-  drop_na(Age) %>%
-  select(Age)
-Platform <- integer(length(Netflix$Age))
-Platform[1:length(Platform)] <- "Netflix"
-Netflix <- cbind(Netflix, Platform)
-
-Hulu <- my_data %>%
-  filter(Hulu == 1) %>%
-  drop_na(Age) %>%
-  select(Age)
-Platform <- integer(length(Hulu$Age))
-Platform[1:length(Platform)] <- "Hulu"
-Hulu <- cbind(Hulu, Platform)
-
-Prime.Video <- my_data %>%
-  filter(Prime.Video == 1) %>%
-  drop_na(Age) %>%
-  select(Age)
-Platform <- integer(length(Prime.Video$Age))
-Platform[1:length(Platform)] <- "Prime Video"
-Prime.Video <- cbind(Prime.Video, Platform)
-
-Disney. <- my_data %>%
-  filter(Disney. == 1) %>%
-  drop_na(Age) %>%
-  select(Age)
-Platform <- integer(length(Disney.$Age))
-Platform[1:length(Platform)] <- "Disney+"
-Disney. <- cbind(Disney., Platform)
-
-my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
-my_data2 <- my_data2 %>%
-  count(Age, Platform)
-
-#my_data2 <- rbind(my_data2[9:12,], my_data2[5:8,], my_data2[17:20,],
-#                  my_data2[13:16,], my_data2[1:4,])
-
-p <- ggplot(my_data2, aes(x = Age, y = n, fill = Platform)) +
-  geom_col(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",
-        #legend.title = element_blank()
-        ) +
-  labs(y = "Count", x = "Age limit",
-       title = "Counts for each streaming platform per age limit") +
-  scale_fill_manual(values = c("#006E99", "#1CE783", "#E50914",
-                               "#00A8E1"))
-p
+```{r plot 8 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot8.png')
 ```
 
-```{r IMDb vs Rotten tomatoes, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-my_data2 <- my_data %>%
-  drop_na(Rotten.Tomatoes, IMDb)
-p <- ggplot(my_data2, aes(x=Rotten.Tomatoes,y=IMDb)) +
-  geom_bin2d() +
-  geom_point(size = .2) +
-  geom_abline(intercept = 0, slope = 0.1) +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none",
-        legend.title = element_blank()) +
-  labs(title = "Rotten tomatoes and IMDb quotation") +
-  scale_fill_gradient(low="skyblue",high="darkblue")
-p
-
-my_data2 <- my_data %>%
-  select(Directors, Netflix,Disney.,Prime.Video,Hulu,IMDb,
-         Rotten.Tomatoes) %>%
-  filter(Rotten.Tomatoes >= 90 | IMDb >= 9)
-p <- ggplot(my_data2, aes(x=Rotten.Tomatoes,y=IMDb)) +
-  #geom_bin2d() +
-  geom_point(size = .2) +
-  geom_abline(intercept = 0, slope = 0.1) +
-  geom_smooth()
-p
+```{r plot 9 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot9.png')
 ```
 
-```{r IMDb vs Rotten tomatoes by platform, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='65%'}
-my_data2 <- my_data %>%
-  select(IMDb, Rotten.Tomatoes, Netflix, Prime.Video, Hulu, Disney.) %>%
-  drop_na(IMDb)
-
-Netflix <- my_data2 %>%
-  filter(Netflix == 1) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Netflix$IMDb))
-Platform[1:length(Platform)] <- "Netflix"
-Netflix <- cbind(Netflix, Platform)
-
-Hulu <- my_data2 %>%
-  filter(Hulu == 1) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Hulu$IMDb))
-Platform[1:length(Platform)] <- "Hulu"
-Hulu <- cbind(Hulu, Platform)
-
-Prime.Video <- my_data2 %>%
-  filter(Prime.Video == 1) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Prime.Video$IMDb))
-Platform[1:length(Platform)] <- "Prime Video"
-Prime.Video <- cbind(Prime.Video, Platform)
-
-Disney. <- my_data2 %>%
-  filter(Disney. == 1) %>%
-  select(IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Disney.$IMDb))
-Platform[1:length(Platform)] <- "Disney+"
-Disney. <- cbind(Disney., Platform)
-
-my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
-
-p1 <- ggplot(Netflix, aes(x = Rotten.Tomatoes, y = IMDb)) +
-  geom_bin2d() +
-  #geom_point(size = .005) +
-  geom_abline(intercept = 0, slope = 0.1) +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Netflix", x = "Rotten tomatoes", fill = "Count") +
-  scale_fill_gradient(low="#FDCED0",high="#E50914")
-
-p2 <- ggplot(Prime.Video, aes(x = Rotten.Tomatoes, y = IMDb)) +
-  geom_bin2d() +
-  #geom_point(size = .005) +
-  geom_abline(intercept = 0, slope = 0.1) +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Prime Video", x = "Rotten tomatoes", fill = "Count") +
-  scale_fill_gradient(low="#CCF2FF",high="#00A8E1")
-
-p3 <- ggplot(Hulu, aes(x = Rotten.Tomatoes, y = IMDb)) +
-  geom_bin2d() +
-  #geom_point(size = .005) +
-  geom_abline(intercept = 0, slope = 0.1) +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Hulu", x = "Rotten tomatoes", fill = "Count") +
-  scale_fill_gradient(low="#D1FAE6",high="#1CE783")
-
-p4 <- ggplot(Disney., aes(x = Rotten.Tomatoes, y = IMDb)) +
-  geom_bin2d() +
-  #geom_point(size = .005) +
-  geom_abline(intercept = 0, slope = 0.1) +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5)) +
-  labs(title = "Disney+", x = "Rotten tomatoes", fill = "Count") +
-  scale_fill_gradient(low="#CCF1FF",high="#006E99")
-
-grid.arrange(p1, p3, p2, p4, nrow = 2, top=textGrob("IMDb vs Rotten tomatoes by platform",
-                                                    gp=gpar(fontsize=20)))
+```{r plot 10 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot10.png')
 ```
 
-```{r IMDb vs Rotten tomatoes by platform and age, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-my_data2 <- my_data %>%
-  select(IMDb, Rotten.Tomatoes, Age, Netflix, Prime.Video, Hulu,
-         Disney.) %>%
-  drop_na(IMDb, Age) %>%
-  mutate(IMDb = IMDb * 10)
-
-Netflix <- my_data2 %>%
-  filter(Netflix == 1) %>%
-  select(Age, IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Netflix$Age))
-Platform[1:length(Platform)] <- "Netflix"
-Netflix <- cbind(Netflix, Platform)
-
-Hulu <- my_data2 %>%
-  filter(Hulu == 1) %>%
-  select(Age, IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Hulu$Age))
-Platform[1:length(Platform)] <- "Hulu"
-Hulu <- cbind(Hulu, Platform)
-
-Prime.Video <- my_data2 %>%
-  filter(Prime.Video == 1) %>%
-  select(Age, IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Prime.Video$Age))
-Platform[1:length(Platform)] <- "Prime Video"
-Prime.Video <- cbind(Prime.Video, Platform)
-
-Disney. <- my_data2 %>%
-  filter(Disney. == 1) %>%
-  select(Age, IMDb, Rotten.Tomatoes)
-Platform <- integer(length(Disney.$Age))
-Platform[1:length(Platform)] <- "Disney+"
-Disney. <- cbind(Disney., Platform)
-
-my_data2 <- rbind(Netflix, Hulu, Prime.Video, Disney.)
-Netflix <- melt(Netflix)
-Hulu <- melt(Hulu)
-Prime.Video <- melt(Prime.Video)
-Disney. <- melt(Disney.)
-
-p <- ggplot(Netflix, aes(x = Age, y = value,
-                          fill = variable, color = Platform)) +
-  geom_boxplot(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",
-        legend.title = element_blank()) +
-  labs(y = "Quotation", x = "Age limit",
-       title = "Quotation distribution against age limit for Netflix") +
-  scale_fill_manual(values = c("#DBA506","#F93208")) + 
-  scale_color_manual(values = c("#E50914", "#E50914","#E50914", "#E50914","#E50914")) +
-  guides(color = FALSE)
-p
-
-p <- ggplot(Hulu, aes(x = Age, y = value,
-                          fill = variable, color = Platform)) +
-  geom_boxplot(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",
-        legend.title = element_blank()) +
-  labs(y = "Quotation", x = "Age limit",
-       title = "Quotation distribution against age limit for Hulu") +
-  scale_fill_manual(values = c("#DBA506","#F93208")) + 
-  scale_color_manual(values = c("#1CE783", "#1CE783","#1CE783", "#1CE783","#1CE783")) +
-  guides(color = FALSE)
-p
-
-p <- ggplot(Prime.Video, aes(x = Age, y = value,
-                          fill = variable, color = Platform)) +
-  geom_boxplot(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",
-        legend.title = element_blank()) +
-  labs(y = "Quotation", x = "Age limit",
-       title = "Quotation distribution against age limit for Prime Video") +
-  scale_fill_manual(values = c("#DBA506","#F93208")) + 
-  scale_color_manual(values = c("#00A8E1", "#00A8E1","#00A8E1", "#00A8E1","#00A8E1")) +
-  guides(color = FALSE)
-p
-
-p <- ggplot(Disney., aes(x = Age, y = value,
-                          fill = variable, color = Platform)) +
-  geom_boxplot(position = "dodge") +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "top",
-        legend.title = element_blank()) +
-  labs(y = "Quotation", x = "Age limit",
-       title = "Quotation distribution against age limit for Disney+") +
-  scale_fill_manual(values = c("#DBA506","#F93208")) + 
-  scale_color_manual(values = c("#006E99", "#006E99","#006E99", "#006E99","#006E99")) +
-  guides(color = FALSE)
-p
+```{r plot 11 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot11.png')
 ```
+
+
+
 
 # Daryna
 
@@ -517,6 +139,7 @@ knitr::include_graphics('plots/1.png')
 ```{r plot 2 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/2.png')
 ```
+
 ```{r plot 3 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/3.png')
 ```

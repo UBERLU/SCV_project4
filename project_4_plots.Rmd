@@ -40,7 +40,7 @@ require("ggrepel")
 
 ```{r}
 # Load Dataset
-data <- read.csv("~/Documents/GitHub/SCV_project4/MoviesOnStreamingPlatforms_updated.csv")
+#data <- read.csv("~/Documents/GitHub/SCV_project4/MoviesOnStreamingPlatforms_updated.csv")
 ```
 
 ```{r}
