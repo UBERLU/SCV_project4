@@ -1,0 +1,166 @@
+---
+title: "project_4_D"
+author: "Daryna"
+date: "12/30/2021"
+output: html_document
+---
+
+```{r}
+# Load libraries
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(ggrepel)
+library(plotly)
+require(gridExtra)
+library(scales)
+library(stringr)
+library(RColorBrewer)
+require("ggrepel")
+```
+
+```{r}
+# Load Dataset
+data <- read.csv("~/Documents/GitHub/SCV_project4/MoviesOnStreamingPlatforms_updated.csv")
+```
+
+```{r}
+# Pie chart of the proportions of the moviesin the dataset
+ggplot(total_by_platform, aes(x = "" , y = V1, fill = fct_inorder(names))) +
+  geom_col(width = 1, color = 1) +
+  coord_polar(theta = "y") +
+  scale_fill_brewer(palette = "Pastel1") +
+  geom_label_repel(data = total_by_platform2,
+                   aes(y = pos, label = paste0(V1)),
+                   size = 4.5, nudge_x = 1, show.legend = FALSE) +
+  guides(fill = guide_legend(title = "Streaming platform")) + scale_fill_manual(values=c("#E50914", "#00A8E1", "#1CE783", "#006E99")) +
+  labs(title = "Composition of the total available movies by platform") +
+  theme_void()
+```
+
+
+
+```{r}
+# Distribution of the rating for RT  
+plot1 <- ggplot(data = subset(data, !is.na(RT_num)), aes(x=RT_num))+
+  geom_histogram(color="darkblue", fill="#F93208", bins = 50) + 
+  labs(x = "Rotten tomatoes score") + 
+  geom_vline(aes(xintercept=mean(RT_num)),
+            color="black", linetype="dashed", size=0.5) + theme_bw()
+
+
+# Distribution of the rating for IMDb 
+plot2 <- ggplot(data = subset(data, !is.na(IMDb_num)), aes(x=IMDb_num))+
+  geom_histogram(color="darkblue", fill="#DBA506", bins = 50) + 
+  labs(x = "IMDb score") +
+  geom_vline(aes(xintercept=mean(IMDb_num)),
+            color="black", linetype="dashed", size=0.5) + theme_bw()
+
+grid.arrange(plot1, plot2, ncol=2, top= "Distribution of the ratings' scores")
+```
+
+
+```{r}
+## GROUPED Boxplots
+ggplot(by_platform_review, aes(x= Platform, y=Rating, fill = Review, color  = Platform)) + 
+  scale_fill_manual(values=c("#DBA506", "#F93208")) + 
+                      scale_color_manual(values = c("#006E99", "#1CE783","#E50914", "#00A8E1")) + theme_bw() + labs(title = "Distribution of scores by platform") + 
+  geom_boxplot()
+```
+
+```{r}
+## Plot of time series
+ggplot(by_year_platform, aes(x = Year, y = n)) + 
+  geom_line(aes(color = Platform), size = 1) +  scale_color_manual(values = c("#006E99", "#1CE783","#E50914", "#00A8E1")) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10))+ scale_y_continuous(breaks = scales::pretty_breaks(n = 5)) + labs(title = "Number of movies available by platform depending on the release year", y = "Count") +theme_bw()
+```
+
+
+```{r}
+plot1 <- ggplot(subset(data, !is.na(RT_num)), aes(x = Year, y = RT_num)) + geom_point(alpha = 0.3, color =  "#F93208") + geom_smooth(method = "lm") + scale_x_continuous(breaks = scales::pretty_breaks(n = 5)) + labs(y = "Rotten Tomatoes score")+ theme_bw()
+
+plot2 <- ggplot(subset(data, !is.na(IMDb_num)), aes(x = Year, y = IMDb_num)) + geom_point(alpha = 0.5, color = "#DBA506") + geom_smooth(method = "lm") + scale_x_continuous(breaks = scales::pretty_breaks(n = 5)) + labs(y = "IMDb score")  + theme_bw()
+
+
+grid.arrange(plot1, plot2, ncol=2, top= "Rating scores over the years")
+```
+
+```{r}
+ggplot(by_year_rating, aes(x =n, y = reorder(genres_categ, n), fill = platform)) + 
+  geom_bar(stat="identity", color='black')+ scale_fill_manual(values = c("#006E99", "#1CE783","#E50914", "#00A8E1"), name="Streaming platform") + labs(title = "Number of movies by genre depending on the platform", y = "Genre", x = "Number of movies") + theme_bw()
+```
+
+
+```{r}
+## By platform
+ggplot(subset(less_genres_data, Netflix == 1 & RT_num >60 ), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1.5) + scale_color_brewer(palette = "Set1", name= "Genre") + labs(title = "Well rated Netflix movies by release year and genre", y = "Rotten Tomatoes score")+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + theme_bw()
+```
+```{r}
+ggplot(subset(less_genres_data, Hulu == 1 & RT_num >60 ), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1.5) + scale_color_brewer(palette = "Set1", name ="Genre") + labs(title = "Well rated Hulu movies by release year and genre", y = "Rotten Tomatoes score")+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + theme_bw()
+```
+
+```{r}
+ggplot(subset(less_genres_data, Disney. == 1 & RT_num >60 ), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1.5) + scale_color_brewer(palette = "Set1", name ="Genre") + labs(title = "Well rated Disney+ movies by release year and genre", y = "Rotten Tomatoes score")+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + theme_bw()
+```
+
+
+```{r}
+ggplot(subset(less_genres_data, Prime.Video == 1 & RT_num >60 ), aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1.5) + scale_color_brewer(palette = "Set1", name ="Genre") + labs(title = "Well rated Prime Video movies by release year and genre", y = "Rotten Tomatoes score")+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + theme_bw()
+```
+
+```{r}
+ggplot(top_rated, aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = rownames(top_rated)),
+                  size = 2) +scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_color_brewer(palette = "Set2",  name ="Genre") + labs(title = "Titles of the top rated movies by release year and genre", y = "Rotten Tomatoes score") +theme_bw()
+```
+
+
+```{r}
+ggplot(top_rated, aes(x = Year, y = RT_num, color = platform)) + geom_point( alpha = 0.5, size = 1) + 
+  geom_text_repel(aes(label = rownames(top_rated)),
+                  size = 2) + scale_color_manual(values = c("#006E99", "#1CE783","#E50914", "#00A8E1"),  name ="Streaming Platform") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Titles of the top rated movies by release year and platform", y = "Rotten Tomatoes score")  + theme_bw()
+
+```
+
+
+```{r}
+data$platform<- as.character(data$platform)
+data$platform[data$platform == "Prime.Video"] <-"Prime Video"
+data$platform[data$platform == "Disney"] <-"Disney+"
+
+ggplot(data, aes(x = Year, y = RT_num, color = platform)) + geom_point( alpha = 0.3, size = 1) + scale_color_manual(values = c("#006E99", "#1CE783","#E50914", "#00A8E1"), name= "Streaming Platform") + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Rotten Tomatoes score by year and platform", y = "Rotten Tomatoes score") + theme_bw()
+```
+
+```{r}
+ggplot(data,aes(Year, RT_num, color = platform)) +
+  stat_summary(geom = "line", fun.y = mean) + scale_color_manual(values = c("#006E99", "#1CE783","#E50914", "#00A8E1"), name= "Streaming Platform") + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Average rotten Tomatoes score by release year and platform", y = "Score") + theme_bw()
+
+```
+
+
+```{r}
+ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
+  geom_bar(stat="identity") + scale_fill_brewer(palette = "YlOrRd", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by quality of movies by platform (Rotten tomatoes)", y = "Platform", x = "Number of movies")+ theme_bw()
+
+```
+
+
+```{r}
+#Percentage 
+ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
+  geom_bar(position="fill", stat="identity") +  scale_fill_brewer(palette = "YlOrRd", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +  labs(title = "Composition by quality of movies by platform (Rotten tomatoes)", y = "Platform", x = "Proportion of movies") + theme_bw()
+```
+
+
+```{r}
+#Genres in top movies Genres
+ggplot(genres_composition, aes(fill=genres_categ, y=platform, x=n)) + 
+  geom_bar(stat="identity") + scale_fill_brewer(palette = "Set3", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by genres of top rated movies by platform", subtitle = "Rotten tomatoes, rating 80/100and higher", y = "Platform", x = "Number of movies")+ theme_bw()
+
+```
+
+```{r}
+ggplot(age_composition, aes(fill=Age, y=platform, x=n)) + 
+  geom_bar(stat="identity") + scale_fill_brewer(palette = "Set3", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by age groups of top rated movies by platform",subtitle = "Based on rotten tomatoes score, rating 80/100 and higher", y = "Platform", x = "Number of movies")+ theme_bw()
+```
+

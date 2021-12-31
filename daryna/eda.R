@@ -25,7 +25,8 @@ total_by_platform <- data %>%
 total_by_platform <- as.data.frame(t(total_by_platform))
 total_by_platform$names <- rownames(total_by_platform)
 
-
+total_by_platform$names[total_by_platform$names == "Prime"] <-"Prime Video"
+total_by_platform$names[total_by_platform$names == "Disney"] <-"Disney+"
 # Get the positions
 total_by_platform2 <- total_by_platform %>% 
   mutate(csum = rev(cumsum(rev(V1))), 
@@ -45,7 +46,6 @@ ggplot(total_by_platform, aes(x = "" , y = V1, fill = fct_inorder(names))) +
 
 
 # Rating according to the streaming platforms 
-
 # First, levels should be numeric values
 data$Rotten.Tomatoes <- as.character(data$Rotten.Tomatoes)
 data$IMDb <- as.character(data$IMDb)
@@ -58,7 +58,8 @@ data$IMDb_num <- readr::parse_number(data$IMDb)
 ggplot(data = subset(data, !is.na(RT_num)), aes(x=RT_num))+
   geom_histogram(color="darkblue", fill="lightblue", bins = 50)
 
-# Distribution of the rating for RT  
+
+# Distribution of the rating for IMDb 
 ggplot(data = subset(data, !is.na(IMDb_num)), aes(x=IMDb_num))+
   geom_histogram(color="darkblue", fill="lightblue", bins = 20)
 
@@ -150,6 +151,8 @@ IMDb_by_platform$Review <- "IMDb"
 # Combine the 2
 by_platform_review <- rbind(RT_by_platform, IMDb_by_platform)
 
+by_platform_review$Platform[by_platform_review$Platform == "Prime"] <-"Prime Video"
+by_platform_review$Platform[by_platform_review$Platform == "Disney"] <-"Disney+"
 
 ## GROUPED Boxplots
 ggplot(by_platform_review, aes(x= Platform, y=Rating, fill = Review)) + 
@@ -188,6 +191,8 @@ by_year_Disney$Platform <- "Disney"
 
 by_year_platform <- rbind(rbind(by_year_Netflix, by_year_Prime), rbind(by_year_Hulu,by_year_Disney))
 
+by_year_platform$Platform[by_year_platform$Platform == "Prime"] <-"Prime Video"
+by_year_platform$Platform[by_year_platform$Platform == "Disney"] <-"Disney+"
 
 
 ## Plot of time series
@@ -218,10 +223,18 @@ data$genres_categ <- as.factor(as.character(data$genres_categ))
 
 
 by_year_rating <- data %>%
+  group_by(platform)  %>%
   count(genres_categ)
 
+by_year_rating$platform  <- as.character(by_year_rating$platform)
 
-ggplot(by_year_rating, aes(x =n ,y = reorder(genres_categ, -n))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
+by_year_rating<-subset(by_year_rating , genres_categ !="NULL")
+
+by_year_rating$platform[by_year_rating$platform == "Prime.Video"] <-"Prime Video"
+by_year_rating$platform[by_year_rating$platform == "Disney"] <-"Disney+"
+
+ggplot(by_year_rating, aes(x =n, y = reorder(genres_categ, n), fill = platform)) + 
+  geom_bar(stat="identity", color='skyblue')
 
 
 # Would be interesting to discover the popularity by genres ?
@@ -251,12 +264,18 @@ require("ggrepel")
 
 top_rated <- subset(less_genres_data, RT_num > 90)
 rownames(top_rated) <- top_rated$Title
+
+top_rated$platform<- as.character(top_rated$platform)
+
 ##   
-ggplot(top_rated, aes(x = Year, y = RT_num, color = genres_categ)) + geom_point( alpha = 0.5, size = 1) + 
+ggplot(top_rated, aes(x = Year, y = RT_num, color = platform)) + geom_point( alpha = 0.5, size = 1) + 
   geom_text_repel(aes(label = rownames(top_rated)),
                   size = 2)
+top_rated$platform<- as.character(top_rated$platform)
+top_rated$platform[top_rated$platform == "Prime.Video"] <-"Prime Video"
+top_rated$platform[top_rated$platform == "Disney"] <-"Disney+"
 
-
+### FFAIREPAR PLATEFORME!!!!!!!!
 
 # Best rated movies by countries
 ggplot(subset(data, RT_num > 90), aes(x = Year, y = RT_num)) + geom_point( alpha = 0.5, size = 1) + 
@@ -297,6 +316,7 @@ data$main_country <- as.factor(as.character(data$main_country))
 
 
 top_country <- data %>%
+  group_by(platform)%>%
   count(main_country)
 
 top_country <- top_country %>% 
@@ -305,7 +325,7 @@ top_country <- top_country %>%
 top_country <- head(top_country, 20)
 
 ggplot(top_country, aes(x =n ,y = reorder(main_country, -n))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
-
+### FAIRE PAR PLATEFORME
 ### Is there dependence between the length of a movie and its rating?
 ggplot(data, aes(x = Runtime, y = RT_num)) + geom_point( alpha = 0.5, size = 1) 
 
@@ -332,7 +352,7 @@ age_groups <- data %>%
 
 ggplot(subset(age_groups, Age!=""), aes(x=Age, y=freq)) +
   geom_bar(stat="identity", fill="blue")
-
+## PAR PLATEFORME
 
 ## Analysis of the top movies
 top_by_RT <- data %>%                                     
@@ -340,6 +360,7 @@ top_by_RT <- data %>%
 
 top_by_RT <- top_by_RT[1:20,]
 
+top_by_RT$Title[top_by_RT$Title == "Jim & Andy: The Great Beyond- Featuring a Very Special, Contractually Obligated Mention of Tony Clifton"] <- "Jim & Andy: The Great Beyond"
 
 ggplot(top_by_RT, aes(x =RT_num ,y = reorder(Title, -RT_num))) + geom_bar(stat="identity", color='skyblue',fill='steelblue')
 ## What is the platform to choose based on the ratings ?
@@ -354,26 +375,26 @@ ggplot(subset(data, RT_num > 80), aes(x = Year, y = RT_num, color =platform)) + 
 
 # Let's categorize the quality to determine the 
 
-data$IMDb_quality_categ <- as.factor(ifelse(data$IMDb_num >= 8, 'Excellent',
-                                  ifelse(data$IMDb_num >= 6 , 'Good', 
-                                         ifelse(data$IMDb_num >= 4 , 'Descent', 
-                                                ifelse(data$IMDb_num >=2 , "Bad", "Terrible")))))
+data$RT_quality_categ <- as.factor(ifelse(data$RT_num >= 80, 'Excellent',
+                                  ifelse(data$RT_num >= 60 , 'Good', 
+                                         ifelse(data$RT_num >= 40 , 'Descent', 
+                                                ifelse(data$RT_num >=20 , "Bad", "Terrible")))))
 quality_composition <- data%>%
   group_by(platform) %>%
-  count(IMDb_quality_categ)
+  count(RT_quality_categ)
   
 quality_composition <- quality_composition %>% 
-  drop_na(IMDb_quality_categ)
+  drop_na(RT_quality_categ)
 # Reorder factor levels 
-levels(quality_composition$IMDb_quality_categ) <- ordered(c("Excellent", "Good", "Descent", "Bad", "Terrible"))
+levels(quality_composition$RT_quality_categ) <- ordered(c("Excellent", "Good", "Descent", "Bad", "Terrible"))
 
 
 # Raw
-ggplot(quality_composition, aes(fill=IMDb_quality_categ, y=platform, x=n)) + 
+ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
   geom_bar(stat="identity")
 
 #Percentage 
-ggplot(quality_composition, aes(fill=IMDb_quality_categ, y=platform, x=n)) + 
+ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
   geom_bar(position="fill", stat="identity")
 
 high_quality_composition <-as.data.frame(table(subset(data,IMDb_num>6)$platform))
@@ -387,9 +408,38 @@ high_quality_composition <-as.data.frame(table(subset(data,IMDb_num>6)$platform)
 
 
 
-netflix_high <-subset(data, platform  = "Netflix" & IMDb_num > 6)
+top <-subset(data, RT_num > 80 )
+
+genres_composition <- top%>%
+  group_by(platform) %>%
+  count(genres_categ)
 
 
-order(as.data.frame(table(netflix_high$genres_categ)))
+age_composition <- top%>%
+  group_by(platform) %>%
+  count(Age)
 
+age_composition$Age<- as.factor(age_composition$Age)
+age_composition <- subset(age_composition, Age !=  "")
+levels(age_composition$Age)
+
+levels(age_composition$Age) <- ordered(c("all","7+", "13+", "16+", "18+", ""))
+
+
+
+
+
+
+
+
+
+genres_composition$platform<- as.character(genres_composition$platform)
+genres_composition$platform[genres_composition$platform == "Prime.Video"] <-"Prime Video"
+genres_composition$platform[genres_composition$platform == "Disney"] <-"Disney+"
+
+
+
+age_composition$platform<- as.character(age_composition$platform)
+age_composition$platform[age_composition$platform == "Prime.Video"] <-"Prime Video"
+age_composition$platform[age_composition$platform == "Disney"] <-"Disney+"
 
