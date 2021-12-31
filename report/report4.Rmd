@@ -448,7 +448,7 @@ Prime.Video <- melt(Prime.Video)
 Disney. <- melt(Disney.)
 
 p <- ggplot(Netflix, aes(x = Age, y = value,
-                          fill = variable)) +
+                          fill = variable, color = Platform)) +
   geom_boxplot(position = "dodge") +
   theme_bw() +
   theme(axis.text.y = element_text(),
@@ -457,11 +457,13 @@ p <- ggplot(Netflix, aes(x = Age, y = value,
         legend.title = element_blank()) +
   labs(y = "Quotation", x = "Age limit",
        title = "Quotation distribution against age limit for Netflix") +
-  scale_fill_manual(values = c("#DBA506","#F93208"))
+  scale_fill_manual(values = c("#DBA506","#F93208")) + 
+  scale_color_manual(values = c("#E50914", "#E50914","#E50914", "#E50914","#E50914")) +
+  guides(color = FALSE)
 p
 
 p <- ggplot(Hulu, aes(x = Age, y = value,
-                          fill = variable)) +
+                          fill = variable, color = Platform)) +
   geom_boxplot(position = "dodge") +
   theme_bw() +
   theme(axis.text.y = element_text(),
@@ -470,11 +472,13 @@ p <- ggplot(Hulu, aes(x = Age, y = value,
         legend.title = element_blank()) +
   labs(y = "Quotation", x = "Age limit",
        title = "Quotation distribution against age limit for Hulu") +
-  scale_fill_manual(values = c("#DBA506","#F93208"))
+  scale_fill_manual(values = c("#DBA506","#F93208")) + 
+  scale_color_manual(values = c("#1CE783", "#1CE783","#1CE783", "#1CE783","#1CE783")) +
+  guides(color = FALSE)
 p
 
 p <- ggplot(Prime.Video, aes(x = Age, y = value,
-                          fill = variable)) +
+                          fill = variable, color = Platform)) +
   geom_boxplot(position = "dodge") +
   theme_bw() +
   theme(axis.text.y = element_text(),
@@ -483,11 +487,13 @@ p <- ggplot(Prime.Video, aes(x = Age, y = value,
         legend.title = element_blank()) +
   labs(y = "Quotation", x = "Age limit",
        title = "Quotation distribution against age limit for Prime Video") +
-  scale_fill_manual(values = c("#DBA506","#F93208"))
+  scale_fill_manual(values = c("#DBA506","#F93208")) + 
+  scale_color_manual(values = c("#00A8E1", "#00A8E1","#00A8E1", "#00A8E1","#00A8E1")) +
+  guides(color = FALSE)
 p
 
 p <- ggplot(Disney., aes(x = Age, y = value,
-                          fill = variable)) +
+                          fill = variable, color = Platform)) +
   geom_boxplot(position = "dodge") +
   theme_bw() +
   theme(axis.text.y = element_text(),
@@ -496,80 +502,82 @@ p <- ggplot(Disney., aes(x = Age, y = value,
         legend.title = element_blank()) +
   labs(y = "Quotation", x = "Age limit",
        title = "Quotation distribution against age limit for Disney+") +
-  scale_fill_manual(values = c("#DBA506","#F93208"))
+  scale_fill_manual(values = c("#DBA506","#F93208")) + 
+  scale_color_manual(values = c("#006E99", "#006E99","#006E99", "#006E99","#006E99")) +
+  guides(color = FALSE)
 p
 ```
 
 # Daryna
 
-```{r plot 1 Daryna, fig.align='center', out.width='60%'}
+```{r plot 1 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/1.png')
 ```
 
-```{r plot 2 Daryna, fig.align='center', out.width='60%'}
+```{r plot 2 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/2.png')
 ```
-```{r plot 3 Daryna, fig.align='center', out.width='60%'}
+```{r plot 3 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/3.png')
 ```
 
-```{r plot 4 Daryna, fig.align='center', out.width='60%'}
+```{r plot 4 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/4.png')
 ```
 
-```{r plot 5 Daryna, fig.align='center', out.width='60%'}
+```{r plot 5 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/5.png')
 ```
 
-```{r plot 6 Daryna, fig.align='center', out.width='60%'}
+```{r plot 6 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/6.png')
 ```
 
-```{r plot 7 Daryna, fig.align='center', out.width='60%'}
+```{r plot 7 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/7.png')
 ```
 
-```{r plot 8 Daryna, fig.align='center', out.width='60%'}
+```{r plot 8 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/8.png')
 ```
 
-```{r plot 9 Daryna, fig.align='center', out.width='60%'}
+```{r plot 9 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/9.png')
 ```
 
-```{r plot 10 Daryna, fig.align='center', out.width='60%'}
+```{r plot 10 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/10.png')
 ```
 
-```{r plot 11 Daryna, fig.align='center', out.width='60%'}
+```{r plot 11 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/11.png')
 ```
 
-```{r plot 12 Daryna, fig.align='center', out.width='60%'}
+```{r plot 12 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/12.png')
 ```
 
-```{r plot 13 Daryna, fig.align='center', out.width='60%'}
+```{r plot 13 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/13.png')
 ```
 
-```{r plot 14 Daryna, fig.align='center', out.width='60%'}
+```{r plot 14 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/14.png')
 ```
 
-```{r plot 15 Daryna, fig.align='center', out.width='60%'}
+```{r plot 15 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/15.png')
 ```
 
-```{r plot 16 Daryna, fig.align='center', out.width='60%'}
+```{r plot 16 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/16.png')
 ```
 
-```{r plot 17 Daryna, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/17png')
+```{r plot 17 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/17.png')
 ```
 
-```{r plot 18 Daryna, fig.align='center', out.width='60%'}
+```{r plot 18 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/18.png')
 ```
 
