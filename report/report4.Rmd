@@ -47,37 +47,15 @@ The analysis is performed on the dataset available on Kaggle that originally was
 
 - `Rotten Tomatoes`, score out of 100 that intends to measure the quality of movies provided by Rotten Tomatoes - an american review-aggregation website for film and television,
 
-- `IMBd`, score out of 10 that intends to measure the quality of movies provided by IMBd which is an online database of information related to films and television series, including ratings.
+- `IMDb`, score out of 10 that intends to measure the quality of movies provided by IMDb which is an online database of information related to films and television series, including ratings.
 
 - `Netflix`, binary variable taking 1 if the movie is available on Netflix streaming platform, 0 - otherwise,
 
 - `Prime Video`, binary variable taking 1 if the movie is available on Prime Video streaming platform, 0 - otherwise,
 
-- Hulu, binary variable taking 1 if the movie is available on Hulu streaming platform, 0 - otherwise,
+- `Hulu`, binary variable taking 1 if the movie is available on Hulu streaming platform, 0 - otherwise,
 
 - `Disney+`, binary variable taking 1 if the movie is available on Disney+ streaming platform, 0 - otherwise.
-
-**TOM**
-
-The main dataset used is composed of the following variables :
-
-- `Title` : the film title;
-
-- `Year` : production year;
-
-- `Age` : age limit for viewing (`all`, `+7`, `+13`, `+16`, `+18`);
-
-- `IMDb` : IMDb rate (between 0 and 10);
-
-- `Rotten.Tomatoes` : Rotten Tomatoes rate (between 0 and 100);
-
-- `Netflix` : 1 if the film is on Netflix and 0 otherwise;
-
-- `Hulu` : 1 if the film is on Hulu and 0 otherwise;
-
-- `Prime.Video` : 1 if the film is on Prime Video and 0 otherwise;
-
-- `Disney.` : 1 if the film is on Disney+ and 0 otherwise;
 
 - `Directors` : production directors;
 
@@ -89,6 +67,8 @@ The main dataset used is composed of the following variables :
 
 - `Runtime` : total duration.
 
+We can see in the pie chart that counts of available movies are not equally distributed between platforms, Netflix and Prime Video have 80% of the total counts.
+
 ```{r plot 1 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/plot1.png')
 ```
@@ -97,9 +77,17 @@ knitr::include_graphics('plots/plot1.png')
 knitr::include_graphics('plots_thomas/plot1.png')
 ```
 
+In the next plot, we can see how movies are spread across time in each platform.
+We see that most of available movies on Netflix seems equally distributed between 2006 and 2021 and that Hulu's are less since there is more holder ones.
+In the case of Prime Video and Disney+, almost 50% of available movies were produced before 2011, especially for Disney+ for which there is all old movies produced by The Walt Disney Company.
+
 ```{r plot 2 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot2.png')
 ```
+
+As we can see in the next plot, most of the movies available are recent, especially for Netflix ones.
+This is consistent with the latter plot.
+In particular, here we can see that Prime Video series is the highest one until 2015, which means that it has the higher count of old movies. 
 
 ```{r plot 4 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/plot4.png')
@@ -111,9 +99,17 @@ knitr::include_graphics('plots/plot4.png')
 knitr::include_graphics('plots/plot2.png')
 ```
 
+The next plot show how ratings are spread for each platform for IMDb and Rotten tomatoes scores. 
+For every platform it seems that IMDb boxes are higher than Rotten Tomatoes', which means that IMDb scores are higher than Rotten Tomatoes'.
+In particular, boxes are almost at the same level independently of the platform.
+This will be investigated further later one.
+
 ```{r plot 3 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/plot3.png')
 ```
+
+In this plot, we have Rotten Tomatoes scores against IMDb's and a straight line that maps that is the identity if we rescaled each scores on the same scale.
+As said before, score higher counts are above this line which means that for a given IMDb score, most of the time Rotten tomatoes' is lower after putting each on the same scale.
 
 ```{r plot 6 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot6.png')
@@ -133,31 +129,57 @@ knitr::include_graphics('plots_thomas/plot3.png')
 knitr::include_graphics('plots_thomas/plot4.png')
 ```
 
+Here we investigate Rotten tomatoes scores against IMDb's for each platform.
+For each platform, except Hulu, we note the same trend as for the basic plot which is that IMDb scores are, in general, higher than Rotten Tomatoes' after rescaling.
+For Hulu, it seems that scores are quite the same for both IMDb and Rotten Tomatoes.
+
+Note that this does not imply that for a given movie, IMDb score will be higher or the same as Rotten Tomatoes.
+These plots do not take into account movies, just scores independently of the latter.
+
 ```{r plot 7 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot7.png')
 ```
 
 ## Ratings by age
 
+In this section we will investigate scores by age group.
+
+In particular, we see that almost 50% of Prime Video and Netflix movies are for all and also that almost 20% are for 18+.
+Note that there is a really small proportion of Disney+ movies that are only available for 18+ group.
+
 ```{r plot 5 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot5.png')
 ```
+
+In the next plots, we will discussed by age group and plaform.
+
+For Netflix, IMDb scores seems to be spread similarly in each group, but Rotten Tomatoes' are lower when movies are available for all.
+We see that for 13+ and 18+ groups, both scores are distributed similarly.
 
 ```{r plot 8 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot8.png')
 ```
 
+For Hulu, we have that 13+ and 18+ Rotten Tomatoes scores are generally higher than IMDb's, but quite lower for all and 16+ groups.
+
 ```{r plot 9 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot9.png')
 ```
+
+For Prime Video, Rotten Tomatoes scores are lower than IMDb's in general. Scores for all and 16+ groups are for the most part lower than 50.
 
 ```{r plot 10 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot10.png')
 ```
 
+Finally, for Disney+, we see that scores for 18+ group are aggregated around 60. As for some other platforms, IMDb scores are higher generally than Rotten Tomatoes'.
+Recall that there is a really small count of such movies on Disney+.
+
 ```{r plot 11 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot11.png')
 ```
+
+To conclude this section, we have seen that movies available to all have, most of the time, higher rates on IMDb than on Rotten Tomatoes.
 
 ## Ratings by genre
 
