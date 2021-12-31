@@ -191,24 +191,11 @@ The plot below represents how the popular movie genres are distributed across th
 knitr::include_graphics('plots/plot6.png')
 ```
 
+As seen before, in 20th century there is more content on Disney+ and Prime Video, but scores are highly rated.
+For recent years Netflix and Hulu tend to have highly rated movies than the other two.
+
 ```{r plot 13 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/plot13.png')
-```
-
-```{r plot 7 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot7.png')
-```
-
-```{r plot 8 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot8.png')
-```
-
-```{r plot 9 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot9.png')
-```
-
-```{r plot 10 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot10.png')
 ```
 
 ## Top ratings
@@ -256,9 +243,15 @@ knitr::include_graphics('plots/plot18.png')
 
 # Conclusion
 
-To conclude, we have seen that Prime Video has the highest count of movies but is not the platform with the highest rate of good movies with respect to IMDb and Rotten Tomatoes scores. Also, these platform concerns different type of movies (genre and age categories) which imply that one platform is better if we are more interested in a certain type of movie and another in a different case.
+To conclude, quality doesn't equal quantity. Particularily, Prime Video, having the highest number of available movies is not the one holding the best rated movies.
+However, Prime Video has an advantage of a large collection of movies from the 20th century, which other platforms lack.
 
-We also saw that there is similarity between each of these platforms on the score of overall movies independently of other criteria, thus the choice of one or another is subjective.
+Netflix, being the one with the highest quality content, also benefits from a variety of genres (mostly oriented to adults). The second position in terms of quality movies holds Disney+ which is mostly oriented towards young audience. Hulu, being the cheapest platform, has the lowest number of content, however the distribution of quality seems fair.
+
+We learn that depending on multiple criteria, the choice between the 4 streaming platforms may differ depending on the audience and its need. 
+Also, these platform concerns different type of movies (genre and age categories) which imply that one platform is better if we are more interested in a certain type of movie and another in a different case.
+
+As in this analysis we only analyzed movies, for future work we may consider a bigger dataset containing information about TV shows and other types of content.
 
 We propose you some of the highest rated movies on these platforms in the following two plots by genre and on which platform it can be found.
 
