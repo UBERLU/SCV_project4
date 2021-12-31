@@ -117,43 +117,43 @@ knitr::include_graphics('plots_thomas/plot11.png')
 # Daryna
 
 ```{r plot 1 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/1.png')
+knitr::include_graphics('plots/plot1.png')
 ```
 
 ```{r plot 2 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/2.png')
+knitr::include_graphics('plots/plot2.png')
 ```
 
 ```{r plot 3 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/3.png')
+knitr::include_graphics('plots/plot3.png')
 ```
 
 ```{r plot 4 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/4.png')
+knitr::include_graphics('plots/plot4.png')
 ```
 
 ```{r plot 5 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/5.png')
+knitr::include_graphics('plots/plot5.png')
 ```
 
 ```{r plot 6 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/6.png')
+knitr::include_graphics('plots/plot6.png')
 ```
 
 ```{r plot 7 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/7.png')
+knitr::include_graphics('plots/plot7.png')
 ```
 
 ```{r plot 8 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/8.png')
+knitr::include_graphics('plots/plot8.png')
 ```
 
 ```{r plot 9 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/9.png')
+knitr::include_graphics('plots/plot9.png')
 ```
 
 ```{r plot 10 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/10.png')
+knitr::include_graphics('plots/plot10.png')
 ```
 
 ```{r plot 11 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
@@ -165,27 +165,27 @@ knitr::include_graphics('plots/12.png')
 ```
 
 ```{r plot 13 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/13.png')
+knitr::include_graphics('plots/plot13.png')
 ```
 
 ```{r plot 14 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/14.png')
+knitr::include_graphics('plots/plot14.png')
 ```
 
 ```{r plot 15 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/15.png')
+knitr::include_graphics('plots/plot15.png')
 ```
 
 ```{r plot 16 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/16.png')
+knitr::include_graphics('plots/plot16.png')
 ```
 
 ```{r plot 17 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/17.png')
+knitr::include_graphics('plots/plot17.png')
 ```
 
 ```{r plot 18 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/18.png')
+knitr::include_graphics('plots/plot18.png')
 ```
 
 # Conclusion
