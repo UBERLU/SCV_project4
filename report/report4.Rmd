@@ -500,6 +500,79 @@ p <- ggplot(Disney., aes(x = Age, y = value,
 p
 ```
 
+# Daryna
+
+```{r plot 1 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/1.png')
+```
+
+```{r plot 2 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/2.png')
+```
+```{r plot 3 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/3.png')
+```
+
+```{r plot 4 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/4.png')
+```
+
+```{r plot 5 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/5.png')
+```
+
+```{r plot 6 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/6.png')
+```
+
+```{r plot 7 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/7.png')
+```
+
+```{r plot 8 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/8.png')
+```
+
+```{r plot 9 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/9.png')
+```
+
+```{r plot 10 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/10.png')
+```
+
+```{r plot 11 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/11.png')
+```
+
+```{r plot 12 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/12.png')
+```
+
+```{r plot 13 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/13.png')
+```
+
+```{r plot 14 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/14.png')
+```
+
+```{r plot 15 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/15.png')
+```
+
+```{r plot 16 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/16.png')
+```
+
+```{r plot 17 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/17png')
+```
+
+```{r plot 18 Daryna, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/18.png')
+```
+
 # Conclusion
 
 # Bibliography
