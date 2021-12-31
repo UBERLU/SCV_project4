@@ -70,6 +70,16 @@ The plot represents the movies that had a rate higher than 90 in Rotten Tomatoes
 
 # By platform
 The movies with the highest rating can be mostly found on Netflix. 
+
+
+
+## Conclusion
+
+To conclude, quality doesn't equal quantity. Particularily, Prime Video, having the highest number of available movies is not the one holding the best rated movies. However, Prime Video has an advantage of  a large collection of movies from the 20th century, which other platforms lack. 
+Netflix, being the one with the highest quality content, also benefits from a variety of genres (mostly oriented to adults). The second position in terms of quality movies holds Disney+ which is mostly oriented towards young audience. Hulu, being the cheapest platform, has the lowest number of content, however the distribution of quality seems fair. 
+We learn that depending on multiple criterias, the choice between the 4 streaming platforms may differ depending on the audience and its need. 
+As in this analysis we only analyzed movies, for future work e may consider a bigger dataset containing information about TV shows and other types ofcontent.
+
 Reference:
 https://www.bbc.com/news/entertainment-arts-53637305
 https://www.cnet.com/tech/services-and-software/best-streaming-service-of-2022/

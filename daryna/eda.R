@@ -385,8 +385,12 @@ quality_composition <- data%>%
   
 quality_composition <- quality_composition %>% 
   drop_na(RT_quality_categ)
-# Reorder factor levels 
-levels(quality_composition$RT_quality_categ) <- ordered(c("Excellent", "Good", "Descent", "Bad", "Terrible"))
+
+levels(quality_composition$RT_quality_categ)
+
+
+quality_composition$RT_quality_categ<- factor(quality_composition$RT_quality_categ, levels = c("Excellent", "Good", "Descent", "Bad", "Terrible"))# Reorder factor levels 
+# levels(quality_composition$RT_quality_categ) <- ordered(c("Excellent", "Good", "Descent", "Bad", "Terrible"))
 
 
 # Raw
@@ -397,7 +401,6 @@ ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) +
 ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
   geom_bar(position="fill", stat="identity")
 
-high_quality_composition <-as.data.frame(table(subset(data,IMDb_num>6)$platform))
 
 
 
@@ -408,13 +411,15 @@ high_quality_composition <-as.data.frame(table(subset(data,IMDb_num>6)$platform)
 
 
 
-top <-subset(data, RT_num > 80 )
+top <-subset(data, RT_quality_categ == "Excellent"  )
 
 genres_composition <- top%>%
   group_by(platform) %>%
   count(genres_categ)
 
+table(top$platform)
 
+table(age_composition$platform)
 age_composition <- top%>%
   group_by(platform) %>%
   count(Age)
@@ -422,8 +427,9 @@ age_composition <- top%>%
 age_composition$Age<- as.factor(age_composition$Age)
 age_composition <- subset(age_composition, Age !=  "")
 levels(age_composition$Age)
+age_composition$Age <- factor(age_composition$Age, levels = c("all","7+", "13+", "16+", "18+", "")) 
 
-levels(age_composition$Age) <- ordered(c("all","7+", "13+", "16+", "18+", ""))
+# levels(age_composition$Age) <- ordered(c("all","7+", "13+", "16+", "18+", ""))
 
 
 
