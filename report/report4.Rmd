@@ -79,24 +79,8 @@ knitr::include_graphics('plots_thomas/plot2.png')
 knitr::include_graphics('plots_thomas/plot3.png')
 ```
 
-```{r exploratory counts, echo=FALSE, warning=FALSE, message=FALSE, fig.align='center', out.width='60%'}
-my_data2 <- my_data %>%
-  summarise(Netflix = sum(Netflix), Hulu = sum(Hulu),
-            Prime.Video = sum(Prime.Video), Disney. = sum(Disney.))
-
-melted <- melt(my_data2)
-melted$variable <- factor(melted$variable, levels = c("Netflix", "Hulu", "Prime.Video", "Disney."))
-
-p <- ggplot(melted, aes(x = variable, y = value, fill = variable)) +
-  geom_col() +
-  theme_bw() +
-  theme(axis.text.y = element_text(),
-        plot.title = element_text(hjust = 0.5),
-        legend.position = "none") +
-  labs(y = "Counts", x = "Platform",
-       title = "Counts of films for each streaming platform") +
-  scale_fill_manual(values = c("#E50914", "#1CE783", "#00A8E1", "#006E99"))
-p
+```{r plot 4 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot4.png')
 ```
 
 ```{r plot 5 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
