@@ -206,15 +206,18 @@ ggplot(data,aes(Year, RT_num, color = platform)) +
 
 ```{r}
 ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
-  geom_bar(stat="identity") + scale_fill_brewer(palette = "YlOrRd", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by quality of movies by platform (Rotten tomatoes)", y = "Platform", x = "Number of movies")+ theme_bw()
-
+  geom_bar(stat="identity") + scale_fill_brewer(palette = "YlOrRd", name ="Quality", direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by quality of movies by platform (Rotten tomatoes)", y = "Platform", x = "Number of movies") + theme_bw() + theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "top")
+ggsave("plot1.png", width = 7, height = 5)
 ```
 
 
 ```{r}
 #Percentage 
 ggplot(quality_composition, aes(fill=RT_quality_categ, y=platform, x=n)) + 
-  geom_bar(position="fill", stat="identity") +  scale_fill_brewer(palette = "YlOrRd", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +  labs(title = "Composition by quality of movies by platform (Rotten tomatoes)", y = "Platform", x = "Proportion of movies") + theme_bw()
+  geom_bar(position="fill", stat="identity") +  scale_fill_brewer(palette = "YlOrRd", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +  labs(title = "Composition by quality of movies by platform (Rotten tomatoes)", y = "Platform", x = "Proportion of movies") + theme_bw() + theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "top")
+ggsave("plot2.png", width = 7, height = 5)
 ```
 
 
@@ -227,6 +230,8 @@ ggplot(genres_composition, aes(fill=genres_categ, y=platform, x=n)) +
 
 ```{r}
 ggplot(age_composition, aes(fill=Age, y=platform, x=n)) + 
-  geom_bar(stat="identity") + scale_fill_brewer(palette = "Set3", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by age groups of top rated movies by platform",subtitle = "Based on rotten tomatoes score, rating 80/100 and higher", y = "Platform", x = "Number of movies")+ theme_bw()
+  geom_bar(stat="identity") + scale_fill_brewer(palette = "Set3", name ="Quality",  direction=-1) + scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + labs(title = "Composition by age groups of top rated movies by platform",subtitle = "Based on rotten tomatoes score, rating 80/100 and higher", y = "Platform", x = "Number of movies")+ theme_bw() + theme(plot.title = element_text(hjust = 0.5),
+        legend.position = "top", plot.subtitle = element_text(hjust = 0.5))
+ggsave("plot3.png", width = 7, height = 5)
 ```
 
