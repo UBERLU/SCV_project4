@@ -34,6 +34,31 @@ library(grid)
 
 # Introduction and description of database
 
+According to BBC, streaming online platforms became more popular than ever during the lockdown provoked by the COVID-19 pandemic. For instance, in UK during April 2020, 40% of the waking hours were spent in front of the screens, on average. Because of the growing popularity of online streaming services all over the world and the increasing variety of content available on such platforms, in this report we propose to analyze 4 major platforms: Netflix, Prime Video, Hulu and Disney+ in terms of quality. We specifically concentrate on movies that are available on these platforms in the United States. Depending on the platform, the monthly price for subscription varies: in 2021, Netflix costs - 9\$, Prime Video - 9\$, Hulu - 7\$ and Disney+ 8\$. The aim of this report is to understand which platform leads in terms of quality content and suits better potential future users, for example depending on the genre preference or age group. 
+The analysis is performed on the dataset available on Kaggle that originally was scraped on the streaming platforms. Specifically, the dataset contains the list of movies available on the 4 streaming pltaforms in 2021. Overall, the dataset contains 9515 row where each row corresponds to a movie and is characterized by the following variables: 
+
+- `ID`, unique ID for each movie,
+
+- `Title`, full title of the movie, 
+
+- `Year`, release year of the movie, time interval from 1914 to 2021,
+
+- `Age`, factor variable specifying age group of the audience for which the movie is intended with the following levels: `all`, `7+`, `13+`, `16+`, `18+`,
+
+- `Rotten Tomatoes`, score out of 100 that intends to measure the quality of movies provided by Rotten Tomatoes - an american review-aggregation website for film and television,
+
+- `IMBd`, score out of 10 that intends to measure the quality of movies provided by IMBd which is an online database of information related to films and television series, including ratings.
+
+- `Netflix`, binary variable taking 1 if the movie is available on Netflix streaming platform, 0 - otherwise,
+
+- `Prime Video`, binary variable taking 1 if the movie is available on Prime Video streaming platform, 0 - otherwise,
+
+- Hulu, binary variable taking 1 if the movie is available on Hulu streaming platform, 0 - otherwise,
+
+- `Disney+`, binary variable taking 1 if the movie is available on Disney+ streaming platform, 0 - otherwise.
+
+**TOM**
+
 The main dataset used is composed of the following variables :
 
 - `Title` : the film title;
@@ -64,8 +89,9 @@ The main dataset used is composed of the following variables :
 
 - `Runtime` : total duration.
 
-
-# Thomas
+```{r plot 1 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/plot1.png')
+```
 
 ```{r plot 1 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot1.png')
@@ -75,6 +101,30 @@ knitr::include_graphics('plots_thomas/plot1.png')
 knitr::include_graphics('plots_thomas/plot2.png')
 ```
 
+```{r plot 4 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/plot4.png')
+```
+
+# Ratings
+
+```{r plot 2 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/plot2.png')
+```
+
+```{r plot 3 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/plot3.png')
+```
+
+```{r plot 6 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot6.png')
+```
+
+```{r plot 5 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/plot5.png')
+```
+
+## Ratings by platform
+
 ```{r plot 3 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot3.png')
 ```
@@ -83,16 +133,14 @@ knitr::include_graphics('plots_thomas/plot3.png')
 knitr::include_graphics('plots_thomas/plot4.png')
 ```
 
-```{r plot 5 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots_thomas/plot5.png')
-```
-
-```{r plot 6 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots_thomas/plot6.png')
-```
-
 ```{r plot 7 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots_thomas/plot7.png')
+```
+
+## Ratings by age
+
+```{r plot 5 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots_thomas/plot5.png')
 ```
 
 ```{r plot 8 Thomas, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
@@ -111,33 +159,14 @@ knitr::include_graphics('plots_thomas/plot10.png')
 knitr::include_graphics('plots_thomas/plot11.png')
 ```
 
-
-
-
-# Daryna
-
-```{r plot 1 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot1.png')
-```
-
-```{r plot 2 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot2.png')
-```
-
-```{r plot 3 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot3.png')
-```
-
-```{r plot 4 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot4.png')
-```
-
-```{r plot 5 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot5.png')
-```
+## Ratings by genre
 
 ```{r plot 6 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/plot6.png')
+```
+
+```{r plot 13 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/plot13.png')
 ```
 
 ```{r plot 7 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
@@ -156,17 +185,7 @@ knitr::include_graphics('plots/plot9.png')
 knitr::include_graphics('plots/plot10.png')
 ```
 
-```{r plot 11 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/11.png')
-```
-
-```{r plot 12 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/12.png')
-```
-
-```{r plot 13 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
-knitr::include_graphics('plots/plot13.png')
-```
+## Top ratings
 
 ```{r plot 14 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
 knitr::include_graphics('plots/plot14.png')
@@ -188,7 +207,16 @@ knitr::include_graphics('plots/plot17.png')
 knitr::include_graphics('plots/plot18.png')
 ```
 
+
 # Conclusion
+
+```{r plot 11 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/11.png')
+```
+
+```{r plot 12 Daryna, echo=FALSE, warning=FALSE, fig.align='center', out.width='60%'}
+knitr::include_graphics('plots/12.png')
+```
 
 # Bibliography
 
